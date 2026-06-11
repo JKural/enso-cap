@@ -1,0 +1,4 @@
+[submodule "external/capdDDEs"]
+	path = external/capdDDEs
+	url = git@github.com:robsontpm/capdDDEs.git
+	branch = cmake

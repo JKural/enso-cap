@@ -1,0 +1,6 @@
+set(capdDDEs_BUILD_TESTS OFF)
+set(capdDDEs_BUILD_EXAMPLES OFF)
+set(capdDDEs_BUILD_UTILS OFF)
+set(capdDDEs_USE_SYSTEM_CAPD OFF)
+set(capdDDEs_INSTALL OFF)
+add_subdirectory("capdDDEs")
