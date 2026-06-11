@@ -88,4 +88,8 @@ std::pair<DElNinoSetup, IElNinoSetup> create_setups(
     unsigned int max_order = 99
 );
 
+std::string tabular_print(DElNinoSetup& setup, DElNinoSolution const& x);
+
+std::string tabular_print(IElNinoSetup& setup, IElNinoSolution const& x);
+
 } // namespace enso

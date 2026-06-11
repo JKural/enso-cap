@@ -16,7 +16,7 @@ int main() {
     int drawing_integration_iters = static_cast<int>((T1 - T0) / tau * p);
     capd::DMap x0map(
         "var:x;"
-        "fun:x;",
+        "fun:0.5;",
         n + 1
     );
     DElNinoSetup

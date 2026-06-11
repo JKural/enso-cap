@@ -42,4 +42,30 @@ std::pair<DElNinoSetup, IElNinoSetup> create_setups(
         )
     };
 }
+
+std::string tabular_print(DElNinoSetup& setup, DElNinoSolution const& X) {
+    std::stringstream sstream;
+    sstream << std::setprecision(17);
+    auto const& x = X.get_x();
+    auto n = setup.n();
+    sstream << "t";
+    for (unsigned i = 0; i <= n; ++i) {
+        sstream << ", f^(" << i << ")";
+    }
+    sstream << "\n";
+    assert((x.dimension() - 1) % (n + 1) == 0);
+    for (unsigned i = 1; i < x.dimension() / (n + 1); ++i) {
+        sstream << static_cast<double>(
+            X.getCurrentTime() - setup.grid().point(i)
+        );
+        for (unsigned j = 0; j <= n; ++j) {
+            sstream << ", " << x[1 + (n + 1) * i + j];
+        }
+        sstream << "\n";
+    }
+    return sstream.str();
+}
+
+std::string tabular_print(IElNinoSolution const& x);
+
 } // namespace enso

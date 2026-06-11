@@ -2,6 +2,11 @@
 
 using namespace enso;
 
+// TODO: investigate fixed points:
+// for 0 < x0 < we have the following:
+// for x0 < 0.0536912 and x0 > 0.93939 we are attracted to short period orbit
+// for 0.536912 < x0 < 0.93939 we are attracted to the long period orbit
+
 int main() {
     double alpha = 1.0;
     double beta = 3.0;
@@ -16,13 +21,13 @@ int main() {
     capd::DMap x0map(
         "par:lambda;"
         "var:x;"
-        "fun:lambda*x;",
+        "fun:lambda;",
         n + 1
     );
     DElNinoSetup
         setup(DElNinoParamsVector {alpha, beta, kappa, tau}, p, n, 0, 0, n);
-    double lambda_min = 0;
-    double lambda_max = 1;
+    double lambda_min = 0.0;
+    double lambda_max = 0.5;
     for (auto i = 0; i < 100; ++i) {
         double lambda = (lambda_min + lambda_max) / 2;
         x0map.setParameter("lambda", lambda);
@@ -53,8 +58,14 @@ int main() {
     DElNinoSolution
         x0_short(setup.grid().point(-p), setup.grid().point(0), n, x0map);
     draw(setup, x0_short, 1000 / tau * p, ".", "fixed-point-short");
+    x0_short = setup.integrate(p, x0_short);
+    std::cout << "x0_short\n";
+    std::cout << tabular_print(setup, x0_short);
     x0map.setParameter("lambda", lambda + eps);
     DElNinoSolution
         x0_long(setup.grid().point(-p), setup.grid().point(0), n, x0map);
     draw(setup, x0_long, 1000 / tau * p, ".", "fixed-point-long");
+    x0_long = setup.integrate(p, x0_long);
+    std::cout << "x0_long\n";
+    std::cout << tabular_print(setup, x0_long);
 }
