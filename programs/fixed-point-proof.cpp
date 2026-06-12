@@ -11,6 +11,13 @@ int main() {
     int p = 80;
     int n = 2;
     double T0 = 100;
+    std::cout << "a = " << alpha << "\n";
+    std::cout << "b = " << beta << "\n";
+    std::cout << "kappa = " << kappa << "\n";
+    std::cout << "tau = " << tau << "\n";
+    std::cout << "period = " << period << "\n";
+    std::cout << "p = " << p << "\n";
+    std::cout << "n = " << n << "\n";
     std::string output_directory = ".";
     int init_integration_iters = static_cast<int>(midpoint(T0 / tau * p));
     capd::DMap x0map(
