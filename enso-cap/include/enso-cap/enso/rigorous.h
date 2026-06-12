@@ -69,35 +69,4 @@ std::pair<IElNinoSolution, capd::IVector> split_integrate(
     capd::IMatrix const& C_inv
 );
 
-bool inclusion_test(
-    IElNinoSetup& setup,
-    IElNinoSolution const& X,
-    IElNinoSetup::TimePoint T,
-    capd::IMatrix const& C_inv,
-    int n_of_splits,
-    std::ostream* output_ptr
-);
-
-// test inclusions with splitting
-bool inclusion_test_mt(
-    IElNinoSetup& setup,
-    IElNinoSolution const& X,
-    IElNinoSetup::TimePoint T,
-    capd::IMatrix const& C_inv,
-    int n_of_splits,
-    int n_of_threads,
-    std::ostream* output_ptr
-);
-
-bool inclusion_test_mt(
-    IElNinoSetup& setup,
-    IElNinoSolution const& X,
-    IElNinoSetup::TimePoint T,
-    capd::IMatrix const& C_inv,
-    int n_of_dimensions,
-    int n_of_splits_per_dimension,
-    int n_of_threads,
-    std::ostream* output_ptr
-);
-
 } // namespace enso
