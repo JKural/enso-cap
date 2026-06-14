@@ -105,7 +105,7 @@ DElNinoSolution newton_improve_periodic_solution(
         return std::pair {x - phiTx, id - DphiTx};
     };
 
-    // a function to measure to "big" x is
+    // a function to measure how "big" x is
     auto measure = [](auto&& x) { return max_norm(x); };
 
     // essentialy an alias, necessary to fix ambiguity
