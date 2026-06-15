@@ -103,65 +103,96 @@ int main(int argc, char** argv) {
         isetup,
         setup,
         Nx,
-        capd::interval(-1, 1) * 3e-3,
-        capd::interval(-1, 1) * 1e-0,
+        // capd::interval(-1, 1) * 3e-3,
+        // capd::interval(-1, 1) * 1e-0,
+        capd::interval(0),
+        capd::interval(0),
         most_significant_eigenvectors_left_orthogonal,
         setup.grid().point(midpoint(cfg.T / cfg.tau * cfg.p)),
         1,
         &std::cout
     );
     auto C_inv = capd::matrixAlgorithms::gaussInverseMatrix(ix0.get_C());
-    for (int i = 0; i < 5; ++i) {
+    std::cout << std::setprecision(6);
+    capd::interval inflation_coefficient_r0 = 1.05;
+    capd::interval inflation_coefficient_xi = 1.05;
+    for (int i = 0; i < 100; ++i) {
         inflate(
             isetup,
             ix0,
             isetup.grid().point(midpoint(cfg.T / cfg.tau * cfg.p)),
             C_inv,
-            1.05,
+            inflation_coefficient_r0,
+            inflation_coefficient_xi,
             &std::cout
         );
-    }
 
-    auto [ix, r1] = split_integrate(
-        isetup,
-        ix0,
-        isetup.grid().point(midpoint(cfg.T / cfg.tau * cfg.p)),
-        8,
-        C_inv
-    );
+        ix0.set_B(
+            capd::IMatrix(
+                ix0.get_C().numberOfRows(),
+                ix0.get_C().numberOfColumns()
+            )
+        );
+        ix0.set_r(capd::IVector(ix0.get_r0().dimension()));
 
-    std::cout << std::setprecision(6);
-    for (unsigned int i = 0; i < ix.get_r0().dimension(); ++i) {
-        if (subsetInterior(r1[i], ix0.get_r0()[i])) {
-            std::cout << "[X] ";
-        } else {
-            std::cout << "[ ] ";
+        auto [ix, r1] = split_integrate(
+            isetup,
+            ix0,
+            isetup.grid().point(midpoint(cfg.T / cfg.tau * cfg.p)),
+            8,
+            C_inv
+        );
+        for (unsigned int i = 0; i < ix.get_r0().dimension(); ++i) {
+            if (subsetInterior(r1[i], ix0.get_r0()[i])) {
+                std::cout << "[X] ";
+            } else {
+                std::cout << "[ ] ";
+            }
+            std::cout << "r0[" << i << "]: " << r1[i] << " " << ix0.get_r0()[i]
+                      << "\n";
         }
-        std::cout << "r0[" << i << "]: " << r1[i] << " " << ix0.get_r0()[i]
-                  << "\n";
-    }
 
-    for (unsigned int i = 0; i < ix.get_Xi().dimension(); ++i) {
-        if (subsetInterior(ix.get_Xi()[i], ix0.get_Xi()[i])) {
-            std::cout << "[X] ";
-        } else {
-            std::cout << "[ ] ";
+        for (unsigned int i = 0; i < ix.get_Xi().dimension(); ++i) {
+            if (subsetInterior(ix.get_Xi()[i], ix0.get_Xi()[i])) {
+                std::cout << "[X] ";
+            } else {
+                std::cout << "[ ] ";
+            }
+            std::cout << "Xi[" << i << "]: " << ix.get_Xi()[i] << " "
+                      << ix0.get_Xi()[i] << "\n";
         }
-        std::cout << "Xi[" << i << "]: " << ix.get_Xi()[i] << " "
-                  << ix0.get_Xi()[i] << "\n";
-    }
+        std::cout << "\n";
 
-    if (subsetInterior(r1, ix0.get_r0())
-        && subsetInterior(ix.get_Xi(), ix0.get_Xi())) {
-        std::cout << "Proof successfull\n";
-    }
+        if (subsetInterior(r1, ix0.get_r0())
+            && subsetInterior(ix.get_Xi(), ix0.get_Xi())) {
+            std::cout << "Proof successfull\n";
+            draw(
+                isetup,
+                ix0,
+                1,
+                cfg.output_directory,
+                cfg.output_name + "-starting-set"
+            );
+            draw(
+                isetup,
+                ix,
+                1,
+                cfg.output_directory,
+                cfg.output_name + "-result-set"
+            );
+            break;
+        }
 
-    draw(
-        isetup,
-        ix0,
-        1,
-        cfg.output_directory,
-        cfg.output_name + "-starting-set"
-    );
-    draw(isetup, ix, 1, cfg.output_directory, cfg.output_name + "-result-set");
+        if (subsetInterior(r1, ix0.get_r0())) {
+            inflation_coefficient_r0 = 1.0;
+        } else {
+            inflation_coefficient_r0 = 1.05;
+        }
+
+        if (subsetInterior(ix.get_Xi(), ix0.get_Xi())) {
+            inflation_coefficient_xi = 1.0;
+        } else {
+            inflation_coefficient_xi = 1.05;
+        }
+    }
 }

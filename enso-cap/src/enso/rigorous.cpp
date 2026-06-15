@@ -25,7 +25,8 @@ void inflate(
     IElNinoSolution& X,
     IElNinoSetup::TimePoint const& T,
     capd::IMatrix const& C_inv,
-    capd::interval inflation_coefficient,
+    capd::interval inflation_coefficient_r0,
+    capd::interval inflation_coefficient_xi,
     std::ostream* output_ptr
 ) {
     auto X_copy = X;
@@ -49,13 +50,13 @@ void inflate(
     r0 *= capd::interval {-1, 1};
 
     // further expand r0 and xi
-    r0 *= inflation_coefficient;
+    r0 *= inflation_coefficient_r0;
 
     // xi is not centered, so we need additional work
     auto center = xi;
     capd::vectalg::mid(xi, center);
     xi -= center;
-    xi *= inflation_coefficient;
+    xi *= inflation_coefficient_xi;
     xi += center;
 
     if (output_ptr) {

@@ -57,7 +57,8 @@ void inflate(
     IElNinoSolution& X,
     IElNinoSetup::TimePoint const& T,
     capd::IMatrix const& C_inv,
-    capd::interval inflation_coefficient,
+    capd::interval inflation_coefficient_r0,
+    capd::interval inflation_coefficient_xi,
     std::ostream* output_ptr
 );
 
