@@ -39,7 +39,7 @@ for kappa in "${kappas[@]}"; do
     --n="$n" \
     --output_directory="$output_directory" \
     --output_name="output-kappa=$kappa" \
-    --kappa="$kappa"
+    --kappa="$kappa" >"$output_directory/inclusions-kappa=$kappa.txt" 2>/dev/null
   if [[ $? ]]; then
     echo "Proof failed. Aborting..."
     exit 1
