@@ -31,7 +31,7 @@ if [[ ! -x "$proof_executable" ]]; then
 fi
 
 for kappa in "${kappas[@]}"; do
-  echo "Proving orbits for kappa = $kappa"
+  echo "Proving orbits for kappa = $kappa..."
   "$proof_executable" --a="$a" \
     --b="$b" \
     --tau="$tau" \
@@ -40,9 +40,11 @@ for kappa in "${kappas[@]}"; do
     --output_directory="$output_directory" \
     --output_name="output-kappa=$kappa" \
     --kappa="$kappa" >"$output_directory/inclusions-kappa=$kappa.txt" 2>/dev/null
-  if [[ $? ]]; then
+  if [[ ! $? ]]; then
     echo "Proof failed. Aborting..."
     exit 1
+  else
+    echo "Success"
   fi
 done
 
