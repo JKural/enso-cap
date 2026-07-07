@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-proof_executable=build/programs/fixed_point_proof
+proof_executable=build/programs/fixed-point-proof
 
 kappas=(
   "[0.001,0.100]"
