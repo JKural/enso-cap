@@ -24,6 +24,14 @@ p=60
 n=2
 output_directory="output"
 
+if [[ ! -d "$output_directory" ]]; then
+  mkdir "$output_directory"
+  if [[ ! $? ]]; then
+    echo "Failed to create output directory"
+    exit 2
+  fi
+fi
+
 if [[ ! -x "$proof_executable" ]]; then
   echo "Proof executable does not exist. Building..."
   ./build.sh
