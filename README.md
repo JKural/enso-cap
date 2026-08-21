@@ -23,7 +23,7 @@ In order to download the repository type is the following command
 ```bash
 git clone https://github.com/JKural/enso-cap.git
 cd enso-cap
-git switch --detach proof-v2
+git switch --detach proof-v3
 ```
 
 Then, in order to build the programs and run the proof, type
