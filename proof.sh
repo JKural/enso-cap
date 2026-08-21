@@ -3,7 +3,7 @@
 proof_executable=build/programs/fixed-point-proof
 
 kappas=(
-  "[0.001,0.100]"
+  "[0.000,0.100]"
   "[0.100,0.150]"
   "[0.150,0.200]"
   "[0.200,0.250]"
