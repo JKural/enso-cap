@@ -6,6 +6,7 @@ function(add_simple_program name)
   target_link_libraries(${name} PRIVATE enso-cap Boost::boost)
 endfunction()
 
+add_simple_program(eigenvalues)
 add_simple_program(find-fixed-point-candidate)
 add_simple_program(fixed-point-proof)
 add_simple_program(plot)
