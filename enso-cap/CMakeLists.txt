@@ -5,14 +5,15 @@ target_sources(enso-cap
     "src/enso/nonrigorous.cpp"
     "src/enso/rigorous.cpp"
     "src/enso/utility.cpp"
+)
+# target_include_directories(enso-cap PUBLIC
+#   # $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/enso-cap>
+#   # $<INSTALL_INTERFACE:include/enso-cap>
+#   ${CMAKE_CURRENT_SOURCE_DIR}/include/enso-cap
+# )
+target_include_directories(enso-cap
   PUBLIC
-    FILE_SET HEADERS
-    BASE_DIRS "include"
-    FILES
-      "include/enso-cap/enso/equation.h"
-      "include/enso-cap/enso/nonrigorous.h"
-      "include/enso-cap/enso/rigorous.h"
-      "include/enso-cap/enso/utility.h"
-      "include/enso-cap/enso-cap.h"
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+    "$<INSTALL_INTERFACE:include>"
 )
 target_link_libraries(enso-cap PUBLIC capdDDEs::capdDDEs)

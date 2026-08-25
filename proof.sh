@@ -25,8 +25,7 @@ n=2
 output_directory="output"
 
 if [[ ! -d "$output_directory" ]]; then
-  mkdir "$output_directory"
-  if [[ ! $? ]]; then
+  if ! mkdir "$output_directory"; then
     echo "Failed to create output directory"
     exit 2
   fi
@@ -34,25 +33,37 @@ fi
 
 if [[ ! -x "$proof_executable" ]]; then
   echo "Proof executable does not exist. Building..."
-  ./build.sh
-  echo "Done"
+  if ./build.sh; then
+    echo "Done"
+  else
+    echo "Error: Build script failed"
+    exit 3
+  fi
 fi
 
 for kappa in "${kappas[@]}"; do
   echo "Proving orbits for kappa = $kappa..."
-  "$proof_executable" --a="$a" \
-    --b="$b" \
-    --tau="$tau" \
-    --p="$p" \
-    --n="$n" \
-    --output_directory="$output_directory" \
-    --output_name="output-kappa=$kappa" \
-    --kappa="$kappa" >"$output_directory/inclusions-kappa=$kappa.txt" 2>/dev/null
-  if [[ ! $? ]]; then
+  options=(
+    --a="$a"
+    --b="$b"
+    --tau="$tau"
+    --p="$p"
+    --n="$n"
+    --output_directory="$output_directory"
+    --output_name="output-kappa=$kappa"
+    --kappa="$kappa"
+  )
+  command=(
+    "$proof_executable"
+    "${options[@]}"
+  )
+  output_file="$output_directory/inclusions-kappa=$kappa.txt"
+
+  if "${command[@]}" >"$output_file" 2>/dev/null; then
+    echo "Success"
+  else
     echo "Proof failed. Aborting..."
     exit 1
-  else
-    echo "Success"
   fi
 done
 
