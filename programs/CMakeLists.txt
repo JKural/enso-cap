@@ -11,3 +11,6 @@ add_simple_program(find-fixed-point-candidate)
 add_simple_program(fixed-point-proof)
 add_simple_program(plot)
 add_simple_program(searching-for-fixed-point-switch)
+add_simple_program(zeros)
+
+add_subdirectory(limit-eq)

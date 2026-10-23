@@ -5,6 +5,9 @@ target_sources(enso-cap
     "src/enso/nonrigorous.cpp"
     "src/enso/rigorous.cpp"
     "src/enso/utility.cpp"
+    "src/enso-limit/nonrigorous.cpp"
+    "src/enso-limit/rigorous.cpp"
+    "src/enso-limit/utility.cpp"
 )
 # target_include_directories(enso-cap PUBLIC
 #   # $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/enso-cap>
